@@ -13,7 +13,7 @@ pipeline {
             steps {
                 echo 'Installation des dépendances Node.js'
                 sh '''
-                    docker run --rm -v "$PWD":/app -w /app node:18-alpine npm install
+                    docker run --rm -v "${WORKSPACE}":/app -w /app node:18-alpine npm install
                 '''
             }
         }
@@ -22,7 +22,7 @@ pipeline {
             steps {
                 echo 'Exécution des tests'
                 sh '''
-                    docker run --rm -v "$PWD":/app -w /app node:18-alpine npm test
+                    docker run --rm -v "${WORKSPACE}":/app -w /app node:18-alpine npm test
                 '''
             }
         }
