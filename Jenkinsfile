@@ -13,9 +13,9 @@ pipeline {
             steps {
                 echo 'Installation des dépendances Node.js'
                 sh '''
-                    pwd
-                    ls -la
-                    docker run --rm -v "${WORKSPACE}":/app -w /app node:18-alpine sh -c "ls -la /app && npm install"
+                    echo "Workspace: ${WORKSPACE}"
+                    ls -la ${WORKSPACE}
+                    docker run --rm -v ${WORKSPACE}:/app -w /app node:18-alpine sh -c "ls -la /app && npm install"
                 '''
             }
         }
@@ -24,7 +24,7 @@ pipeline {
             steps {
                 echo 'Exécution des tests'
                 sh '''
-                    docker run --rm -v "${WORKSPACE}":/app -w /app node:18-alpine npm test
+                    docker run --rm -v ${WORKSPACE}:/app -w /app node:18-alpine npm test
                 '''
             }
         }
