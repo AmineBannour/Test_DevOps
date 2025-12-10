@@ -1,26 +1,23 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:18'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+
+    agent any
 
     stages {
+
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Install Dependencies & Tests') {
+            agent {
+                docker {
+                    image 'node:18'
+                }
+            }
             steps {
                 sh 'npm install'
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
                 sh 'npm test'
             }
         }
