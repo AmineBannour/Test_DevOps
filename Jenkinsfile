@@ -1,38 +1,30 @@
 pipeline {
     agent any
-    
+
     stages {
+
         stage('Checkout') {
             steps {
-                echo 'Récupération du code du dépôt Git'
                 checkout scm
             }
         }
-        
-        stage('Install dépendances Node') {
+
+        stage('Install Dependencies') {
             steps {
-                echo 'Installation des dépendances Node.js'
-                sh '''
-                    docker run --rm --privileged -v ${WORKSPACE}:/app:rw -w /app node:18-alpine sh -c "ls -la /app && npm install"
-                '''
+                sh 'npm install'
             }
         }
-        
-        stage('Tests') {
+
+        stage('Run Tests') {
             steps {
-                echo 'Exécution des tests'
-                sh '''
-                    docker run --rm --privileged -v ${WORKSPACE}:/app:rw -w /app node:18-alpine npm test
-                '''
+                sh 'npm test'
             }
         }
-        
-        stage('Build Docker') {
+
+        stage('Build Docker Image') {
             steps {
-                echo 'Construction de l\'image Docker'
                 sh 'docker build -t todo-app .'
             }
         }
     }
 }
-
