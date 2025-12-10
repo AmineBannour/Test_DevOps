@@ -10,6 +10,12 @@ pipeline {
         }
         
         stage('Install dépendances Node') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
             steps {
                 echo 'Installation des dépendances Node.js'
                 sh 'npm install'
@@ -17,6 +23,12 @@ pipeline {
         }
         
         stage('Tests') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
             steps {
                 echo 'Exécution des tests'
                 sh 'npm test'
@@ -26,7 +38,9 @@ pipeline {
         stage('Build Docker') {
             steps {
                 echo 'Construction de l\'image Docker'
-                sh 'docker build -t todo-app .'
+                script {
+                    sh 'docker build -t todo-app .'
+                }
             }
         }
     }
